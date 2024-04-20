@@ -1,0 +1,16 @@
+<!-- add_interaction.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Interaction</title>
+</head>
+<body>
+    <h2>Add Interaction for {{ customer.name }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

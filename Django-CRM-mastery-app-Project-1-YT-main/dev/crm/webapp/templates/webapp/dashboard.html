@@ -1,0 +1,148 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+
+    <h5> Welcome, {{user}}! 👋 </h5>
+
+    <hr>
+
+    <a class="btn btn-outline-primary btn-sm" href="{% url 'create-record' %}">
+        Create a new record &nbsp; <i class="fa fa-plus-circle" aria-hidden="true"></i>
+    </a>
+    <a class="btn btn-primary" href="{% url 'add_interaction' customer_id=customer.id %}">Add Interaction</a>
+
+
+
+    <hr> 
+
+    <div class="row">
+        <div class="col-md-6">
+            <h6>Product Sales</h6>
+            <canvas id="productSalesChart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h6>Revenue</h6>
+            <canvas id="revenueChart"></canvas>
+        </div>
+    </div>
+
+    <hr>
+
+    <table class="table table-hover table-bordered">
+        <thead class="table-light">
+            <tr>
+                <th scope="col"> ID </th>
+                <th scope="col"> Full name </th>
+                <th scope="col"> Email </th>
+                <th scope="col"> Phone </th>
+                <th scope="col"> Address </th>
+                <th scope="col"> City </th>
+                <th scope="col"> Province </th>
+                <th scope="col"> Country </th>
+                <th scope="col"> Date joined </th>
+                <th scope="col"> View </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if records %}
+                {% for record in records %}
+                    <tr>
+                        <td> {{record.id}} </td>
+                        <td> {{record.first_name}}  {{record.last_name}} </td>
+                        <td> {{record.email}} </td>
+                        <td> {{record.phone}} </td>
+                        <td> {{record.address}} </td>
+                        <td> {{record.city}} </td>
+                        <td> {{record.province}} </td>
+                        <td> {{record.country}} </td>
+                        <td> {{record.creation_date}} </td>
+                        <td> <a class="btn btn-success btn-sm" href="{% url 'record' record.id %}"> <i class="fa fa-eye" aria-hidden="true"></i> </a> </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Sample data for product sales and revenue (replace with your actual data)
+        const productSalesData = {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [{
+                label: 'Product Sales',
+                data: [100, 200, 150, 250, 300, 200, 400],
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        const revenueData = {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [{
+                label: 'Revenue',
+                data: [1000, 1500, 1200, 1800, 2000, 1600, 2200],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        // Sample data for users based on country
+        const usersByCountryData = {
+            labels: ['USA', 'Canada', 'UK', 'Australia', 'India'],
+            datasets: [{
+                label: 'Number of Users',
+                data: [150, 100, 80, 120, 90],
+                backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)'],
+                borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)'],
+                borderWidth: 1
+            }]
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Draw product sales chart
+            const ctxProductSales = document.getElementById('productSalesChart').getContext('2d');
+            new Chart(ctxProductSales, {
+                type: 'line',
+                data: productSalesData,
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+            // Draw revenue chart
+            const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
+            new Chart(ctxRevenue, {
+                type: 'line',
+                data: revenueData,
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+            // Draw users by country pie chart
+            const ctxUsersByCountry = document.getElementById('usersByCountryChart').getContext('2d');
+            new Chart(ctxUsersByCountry, {
+                type: 'pie',
+                data: usersByCountryData,
+                options: {
+                    responsive: true
+                }
+            });
+        });
+    </script>
+
+{% endblock %}
