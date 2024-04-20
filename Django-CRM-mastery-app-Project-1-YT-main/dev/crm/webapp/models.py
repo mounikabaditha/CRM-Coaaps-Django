@@ -31,22 +31,23 @@ class Customer(models.Model):
     email = models.EmailField()
     # Add other fields as needed
 
-class Interaction(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
-    interaction_type = models.CharField(max_length=100)
-    description = models.TextField()
-    # Add other fields as needed
+# models.py
+from django.db import models
+from django.contrib.auth.models import User
 
+# models.py
+from django.db import models
+from django.contrib.auth.models import User
+
+class Interaction(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)  # Assuming Customer model exists
+    interaction_type = models.CharField(max_length=100)
+    date_time = models.DateTimeField()
+    notes = models.TextField()
 
     def __str__(self):
-
-        return self.first_name + "   " + self.last_name
-
-
-
-
-
+        return f"Interaction between {self.user.username} and {self.customer}"
 
 
 

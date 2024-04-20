@@ -26,9 +26,10 @@ urlpatterns = [
     path('record/<int:pk>', views.singular_record, name="record"),
 
     path('delete-record/<int:pk>', views.delete_record, name="delete-record"),
-    path('customer/<int:customer_id>/add_interaction/', views.add_interaction, name='add_interaction'),
-#path('customer/<int:customer_id>/add_interaction/', views.add_interaction, name='add_interaction'),
-
+    
+     path('interaction-tracking/', views.interaction_tracking, name='interaction-tracking'),
+    path('sales-management/', views.sales_management, name='sales-management'),
+    path('service-management/', views.service_management, name='service-management'),
 ]
 
 

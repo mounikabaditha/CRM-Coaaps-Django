@@ -176,32 +176,51 @@ def user_logout(request):
     return redirect("my-login")
 # views.py
 
-from django.shortcuts import render, redirect
-from .models import Customer, Interaction
-from .forms import InteractionForm
+from django.shortcuts import render
 
-def add_interaction(request, customer_id):
-    customer = Customer.objects.get(id=customer_id)
+def sales_management(request):
+    # Add your sales management logic here
+    return render(request, 'webapp/sales_management.html')
+
+def service_management(request):
+    # Add your service management logic here
+    return render(request, 'webapp/service_management.html')
+# views.py
+from django.shortcuts import render, redirect
+from .forms import InteractionForm
+from .models import Interaction
+
+def add_interaction(request):
     if request.method == 'POST':
         form = InteractionForm(request.POST)
         if form.is_valid():
             interaction = form.save(commit=False)
-            interaction.customer = customer
+            interaction.user = request.user
             interaction.save()
-            return redirect('customer_detail', customer_id=customer_id)
+            return redirect('dashboard')  # Redirect to dashboard or any other appropriate page
     else:
         form = InteractionForm()
-    return render(request, 'add_interaction.html', {'form': form, 'customer': customer})
-# views.py
-from django.urls import reverse
-from django.shortcuts import render
-from .models import Customer  # Import your Customer model
+    return render(request, 'webapp/add_interaction.html', {'form': form})
 
-def my_view(request):
-    # Retrieve the customer object, assuming it's retrieved from the database
-    customer = Customer.objects.get(id=1)  # Replace 1 with the actual customer ID
-    context = {'customer': customer}
-    return render(request, 'my_template.html', context)
+def interaction_history(request):
+    interactions = Interaction.objects.filter(user=request.user).order_by('-date_time')
+    return render(request, 'webapp/interaction_history.html', {'interactions': interactions})
+# views.py
+from django.shortcuts import render, redirect
+from .forms import InteractionForm
+
+from django.shortcuts import render, redirect
+from .forms import InteractionForm
+
+def interaction_tracking(request):
+    if request.method == 'POST':
+        form = InteractionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('success_url')  # Redirect to a success URL after saving the interaction
+    else:
+        form = InteractionForm()
+    return render(request, 'webapp/interaction_tracking.html', {'form': form})
 
 
 

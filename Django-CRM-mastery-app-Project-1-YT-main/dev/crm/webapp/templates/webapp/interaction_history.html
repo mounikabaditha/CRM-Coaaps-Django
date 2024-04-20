@@ -1,0 +1,9 @@
+{% extends 'webapp/base.html' %}
+{% block content %}
+    <h2>Interaction History</h2>
+    <ul>
+    {% for interaction in interactions %}
+        <li>{{ interaction.date_time }} - {{ interaction.interaction_type }} with {{ interaction.customer.full_name }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
